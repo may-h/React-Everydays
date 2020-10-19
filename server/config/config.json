@@ -4,7 +4,7 @@
     "password": "hmsk6534",
     "database": "everydays",
     "host": "localhost",
-    "port": 3307,
+    "port": 3306,
     "dialect": "mysql"
   },
   "test": {

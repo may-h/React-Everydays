@@ -24,8 +24,10 @@ db.Memo = require("./memo")(sequelize, Sequelize);
 db.Attendance = require("./attendance")(sequelize, Sequelize);
 
 //Define Relations
-db.User.hasOne(db.Company, { ForeignKey: "compay_code" });
-db.Company.belongsTo(db.User, { ForeignKey: "compay_code" });
+db.User.hasOne(db.Company, { ForeignKey: "user_no", onDelete: "CASCADE" });
+db.Company.belongsTo(db.User, {
+  ForeignKey: "user_no",
+});
 
 db.Company.hasMany(db.Member, { ForeignKey: "company_code" });
 db.Member.belongsTo(db.Company, { ForeignKey: "company_code" });

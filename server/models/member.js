@@ -7,28 +7,28 @@ module.exports = (sequelize, { DataTypes }) => {
         allowNull: false,
         unique: true,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
       },
       name: {
         type: DataTypes.STRING(20),
-        allowNull: false,
+        allowNull: false
       },
       phone: {
         type: DataTypes.STRING(20),
-        allowNull: false,
+        allowNull: false
       },
       birth: {
         type: DataTypes.DATE,
-        allowNull: true,
+        allowNull: true
       },
       company_code: {
         type: DataTypes.STRING(20),
-        allowNull: false,
-      },
+        allowNull: false
+      }
     },
     {
       timestamps: true,
-      paranoid: true,
+      paranoid: true
     }
   );
 };
