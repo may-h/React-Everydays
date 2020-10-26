@@ -1,18 +1,36 @@
 const express = require("express");
 const router = express.Router();
 const { Member, Company } = require("../../models");
+const Op = require("sequelize").Op;
+
+//핸드폰 뒷번호를 보내면 체크인하는거
+router.post("/checkIn", async (req, res, next) => {
+  const lastPhoneNum = req.body.lastPhoneNum || "";
+  const company_code = req.body.company_code || "";
+
+  try {
+    const member = await Member.findAll({
+      where: { [Op.and]: [{ phone: { [Op.like]: "%" + lastPhoneNum + "%" } }, { company_code: company_code }] }
+    });
+    console.log("chech in ->", member);
+    res.send({ code: 200, data: [member], message: "success" });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+});
 
 //회원 정보 가져오기
 router.get("/:id", async (req, res) => {
   const member_no = req.params.id || "";
-  const member = await Member.fineOne({ where: { member_no } });
-  if (member) res.send({ code: 200, data: [member], message: "success" });
+  const member = await Member.findOne({ where: { member_no } });
+  res.send({ code: 200, data: [member], message: "success" });
 });
 
 //모든 회원 리스트 가져오기
 router.get("/", async (req, res) => {
   const members = await Member.findAll();
-  if (members.length > 0) res.send({ code: 200, data: members });
+  res.send({ code: 200, data: members });
 });
 
 //회원 등록 하기
@@ -24,15 +42,15 @@ router.post("/", async (req, res) => {
 
   try {
     const c_result = await Company.findOne({ company_code });
-    console.debug(`[member]company_code search result - ${c_result}`);
-    if (result) {
+    console.debug(`[member]company_code search result - ${JSON.stringify(c_result)}`);
+    if (c_result) {
       const m_result = await Member.create({
         name,
         phone,
         birth,
         company_code
       });
-      console.debug(`[member] create member ${name} result - ${m_result}`);
+      console.debug(`[member] create member ${name} result - ${JSON.stringify(m_result)}`);
       if (m_result) res.send({ code: 200, message: "success" });
     }
   } catch (err) {

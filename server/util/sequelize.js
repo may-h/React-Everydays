@@ -1,11 +1,10 @@
 const { Attendance, Memo, Payment } = require("../models");
 const { User, Member, Company } = require("../models");
+const Op = require("sequelize").Op;
 
 const getFindOne = async (model, condition) => {
   let query = { where: condition };
-  console.debug(
-    `[DEBUG][getFindOne] query - ${model} | ${JSON.stringify(query)}`
-  );
+  console.debug(`[DEBUG][getFindOne] query - ${model} | ${JSON.stringify(query)}`);
   try {
     let data;
     switch (model) {
@@ -31,9 +30,7 @@ const getFindOne = async (model, condition) => {
     console.debug(`[DEBUG][getFindOne] data - ${data}`);
     return data;
   } catch (err) {
-    console.error(
-      `[ERROR][getFineOne] model-${model}, condition-${condition} : ${err.message}`
-    );
+    console.error(`[ERROR][getFineOne] model-${model}, condition-${condition} : ${err.message}`);
     return;
   }
 };
